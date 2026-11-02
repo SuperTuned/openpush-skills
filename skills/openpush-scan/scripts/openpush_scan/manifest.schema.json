@@ -1,0 +1,260 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openpush.ai/schemas/app-manifest-v1.json",
+  "title": "OpenPush app manifest",
+  "type": "object",
+  "required": [
+    "manifest_version",
+    "generated_at",
+    "scanner_version",
+    "platforms",
+    "app_version",
+    "sdk",
+    "events",
+    "tags",
+    "triggers",
+    "outcomes",
+    "aliases",
+    "identity",
+    "deep_links",
+    "screens",
+    "local_notifications",
+    "locales",
+    "strings",
+    "release_notes",
+    "capabilities",
+    "inferences",
+    "goal",
+    "shared_categories",
+    "redactions",
+    "dynamic_counts"
+  ],
+  "properties": {
+    "manifest_version": {"type": "integer", "enum": [1]},
+    "generated_at": {"type": "string", "maxLength": 40},
+    "scanner_version": {"type": "string", "pattern": "^[0-9A-Za-z.+-]{1,32}$"},
+    "platforms": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {"type": "string", "enum": ["ios", "android", "unity"]}
+    },
+    "app_version": {
+      "type": "string",
+      "pattern": "^[0-9A-Za-z.+-]{1,32}$",
+      "nullable": true
+    },
+    "sdk": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["version_hint", "modules"],
+        "properties": {
+          "version_hint": {
+            "type": "string",
+            "pattern": "^[0-9A-Za-z.+-]{1,64}$",
+            "nullable": true
+          },
+          "modules": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {"type": "string", "maxLength": 80}
+          }
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "type": "object",
+        "required": ["name", "property_keys", "call_count", "platforms", "dynamic"],
+        "properties": {
+          "name": {"type": "string", "pattern": "^[a-zA-Z0-9_\\-. ]{1,128}$"},
+          "property_keys": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {"type": "string", "maxLength": 128}
+          },
+          "call_count": {"type": "integer"},
+          "platforms": {"type": "array", "maxItems": 3, "items": {"type": "string", "enum": ["ios", "android", "unity"]}},
+          "providers": {"type": "array", "maxItems": 10, "items": {"type": "string", "pattern": "^[a-zA-Z0-9_.-]{1,40}$"}},
+          "dynamic": {"type": "boolean"}
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "required": ["key", "value_samples", "platforms"],
+        "properties": {
+          "key": {"type": "string", "maxLength": 128},
+          "value_samples": {"type": "array", "maxItems": 20, "items": {"type": "string", "maxLength": 200}},
+          "platforms": {"type": "array", "maxItems": 3, "items": {"type": "string", "enum": ["ios", "android", "unity"]}}
+        }
+      }
+    },
+    "triggers": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "required": ["key", "value_samples", "platforms"],
+        "properties": {
+          "key": {"type": "string", "maxLength": 128},
+          "value_samples": {"type": "array", "maxItems": 20, "items": {"type": "string", "maxLength": 200}},
+          "platforms": {"type": "array", "maxItems": 3, "items": {"type": "string", "enum": ["ios", "android", "unity"]}}
+        }
+      }
+    },
+    "outcomes": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "required": ["name", "has_value", "platforms"],
+        "properties": {
+          "name": {"type": "string", "pattern": "^[a-zA-Z0-9_\\-. ]{1,128}$"},
+          "has_value": {"type": "boolean"},
+          "platforms": {"type": "array", "maxItems": 3, "items": {"type": "string", "enum": ["ios", "android", "unity"]}}
+        }
+      }
+    },
+    "aliases": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "required": ["label"],
+        "properties": {"label": {"type": "string", "maxLength": 128}}
+      }
+    },
+    "identity": {
+      "type": "object",
+      "required": ["login", "logout", "auth_hash"],
+      "properties": {
+        "login": {"type": "boolean"},
+        "logout": {"type": "boolean"},
+        "auth_hash": {"type": "boolean"}
+      }
+    },
+    "deep_links": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "required": ["kind", "scheme", "host", "path", "platforms", "full_urls"],
+        "properties": {
+          "kind": {"type": "string", "enum": ["custom_scheme", "universal_link", "app_link"]},
+          "scheme": {"type": "string", "maxLength": 100, "nullable": true},
+          "host": {"type": "string", "maxLength": 255, "nullable": true},
+          "path": {"type": "string", "maxLength": 500, "nullable": true},
+          "platforms": {"type": "array", "maxItems": 3, "items": {"type": "string", "enum": ["ios", "android", "unity"]}},
+          "full_urls": {"type": "array", "maxItems": 20, "items": {"type": "string", "maxLength": 1000}}
+        }
+      }
+    },
+    "screens": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "required": ["name", "route"],
+        "properties": {
+          "name": {"type": "string", "maxLength": 200},
+          "route": {"type": "string", "maxLength": 500, "nullable": true}
+        }
+      }
+    },
+    "local_notifications": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "required": ["trigger", "title", "body", "platforms"],
+        "properties": {
+          "trigger": {"type": "string", "enum": ["time_interval", "calendar", "location", "push_scheduled", "unknown"]},
+          "title": {"type": "string", "maxLength": 200, "nullable": true},
+          "body": {"type": "string", "maxLength": 200, "nullable": true},
+          "platforms": {"type": "array", "maxItems": 3, "items": {"type": "string", "enum": ["ios", "android", "unity"]}}
+        }
+      }
+    },
+    "locales": {"type": "array", "maxItems": 100, "items": {"type": "string", "maxLength": 35}},
+    "strings": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "required": ["key", "value"],
+        "properties": {
+          "key": {"type": "string", "maxLength": 200},
+          "value": {"type": "string", "maxLength": 200}
+        }
+      }
+    },
+    "release_notes": {
+      "type": "object",
+      "nullable": true,
+      "required": ["version", "locale", "text"],
+      "properties": {
+        "version": {"type": "string", "pattern": "^[0-9A-Za-z.+-]{1,32}$", "nullable": true},
+        "locale": {"type": "string", "maxLength": 35},
+        "text": {"type": "string", "maxLength": 1200}
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "required": ["in_app_messages", "live_activities", "click_listener", "foreground_listener", "permission_pre_prompt", "onesignal_compat"],
+      "properties": {
+        "in_app_messages": {"type": "boolean"},
+        "live_activities": {"type": "boolean"},
+        "click_listener": {"type": "boolean"},
+        "foreground_listener": {"type": "boolean"},
+        "permission_pre_prompt": {"type": "boolean", "nullable": true},
+        "onesignal_compat": {"type": "boolean"}
+      }
+    },
+    "inferences": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "required": ["kind", "value", "basis"],
+        "properties": {
+          "kind": {"type": "string", "enum": ["category", "lifecycle_moment"]},
+          "value": {"type": "string", "enum": ["game", "ecommerce", "media", "fintech", "edtech", "social", "productivity", "health", "travel", "other", "onboarding", "activation", "purchase", "trial", "churn_risk", "milestone", "content_new", "cart", "permission", "retention"]},
+          "basis": {"type": "string", "pattern": "^[a-z0-9-]{1,40}$"}
+        }
+      }
+    },
+    "goal": {
+      "type": "object",
+      "nullable": true,
+      "required": ["moment", "event"],
+      "properties": {
+        "moment": {"type": "string", "enum": ["all", "onboarding", "activation", "purchase", "trial", "churn_risk", "milestone", "content_new", "cart", "permission", "retention"]},
+        "event": {"type": "string", "pattern": "^[a-zA-Z0-9_\\-. ]{1,128}$", "nullable": true}
+      }
+    },
+    "shared_categories": {"type": "object", "additionalProperties": {"type": "boolean"}},
+    "redactions": {
+      "type": "object",
+      "required": ["dropped", "by_rule"],
+      "properties": {
+        "dropped": {"type": "integer"},
+        "by_rule": {"type": "object", "additionalProperties": {"type": "integer"}}
+      }
+    },
+    "dynamic_counts": {
+      "type": "object",
+      "required": ["events", "tags", "triggers"],
+      "properties": {
+        "events": {"type": "integer"},
+        "tags": {"type": "integer"},
+        "triggers": {"type": "integer"}
+      }
+    }
+  }
+}

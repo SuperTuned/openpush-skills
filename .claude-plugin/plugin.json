@@ -1,0 +1,14 @@
+{
+  "name": "openpush-scan",
+  "displayName": "OpenPush Scan",
+  "version": "0.1.0",
+  "description": "Scan an app repository locally, review what to share, and turn it into OpenPush draft programs",
+  "author": {
+    "name": "SuperTuned",
+    "url": "https://www.openpush.ai"
+  },
+  "homepage": "https://www.openpush.ai/docs/guides/codebase-scan",
+  "repository": "https://github.com/SuperTuned/openpush-skills",
+  "license": "Apache-2.0",
+  "keywords": ["openpush", "push-notifications", "codebase-scan"]
+}

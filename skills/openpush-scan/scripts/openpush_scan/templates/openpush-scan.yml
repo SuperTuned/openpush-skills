@@ -1,0 +1,27 @@
+name: OpenPush codebase scan
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  compare:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pipx run --spec "git+https://github.com/SuperTuned/openpush-skills" openpush-scan ci --app ${{ vars.OPENPUSH_APP }} --server ${{ vars.OPENPUSH_SERVER }}
+        env:
+          # A read-only OpenPush key is sufficient for manifest diff.
+          OPENPUSH_API_KEY: ${{ secrets.OPENPUSH_API_KEY }}
+
+  share-release:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pipx run --spec "git+https://github.com/SuperTuned/openpush-skills" openpush-scan scan .
+      - run: pipx run --spec "git+https://github.com/SuperTuned/openpush-skills" openpush-scan share --ci --on-version-change --app ${{ vars.OPENPUSH_APP }} --server ${{ vars.OPENPUSH_SERVER }}
+        env:
+          OPENPUSH_API_KEY: ${{ secrets.OPENPUSH_API_KEY }}

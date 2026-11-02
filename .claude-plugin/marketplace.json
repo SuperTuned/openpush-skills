@@ -1,0 +1,16 @@
+{
+  "name": "openpush-skills",
+  "description": "OpenPush skills and agents for coding agents",
+  "owner": {
+    "name": "SuperTuned",
+    "url": "https://www.openpush.ai"
+  },
+  "plugins": [
+    {
+      "name": "openpush-scan",
+      "source": "./",
+      "description": "Scan an app repository locally, review what to share, and turn it into OpenPush draft programs",
+      "category": "development"
+    }
+  ]
+}
